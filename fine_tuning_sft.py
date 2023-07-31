@@ -202,7 +202,7 @@ def train(
 
     response_template = "### 応答:"
     instruction_template = "### 指示:"    
-    collator = DataCollatorForCompletionOnlyLM(response_template, instruction_template=instruction_template, tokenizer=tokenizer)
+    collator = DataCollatorForCompletionOnlyLM(response_template, tokenizer=tokenizer)
 
     # gradient_accumulation_steps = batch_size // micro_batch_size    
     trainer = SFTTrainer(
