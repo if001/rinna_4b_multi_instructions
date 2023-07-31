@@ -165,11 +165,23 @@ def train(
     train_val = data["train"].train_test_split(
             test_size=val_set_size, shuffle=True, seed=42
     )
-    train_data = generate_and_tokenize_prompt(train_val["train"].shuffle())
-    print("train_data len", len(train_data))
-    val_data = generate_and_tokenize_prompt(train_val["test"].shuffle())
-    print("val_data", len(val_data))
-    print("train_data", train_data[0])
+
+    train_val = data["train"].train_test_split(
+        test_size=val_set_size, shuffle=True, seed=42
+    )
+    train_data = (
+        train_val["train"].shuffle().map(generate_and_tokenize_prompt)
+    )
+    val_data = (
+        train_val["test"].shuffle().map(generate_and_tokenize_prompt)
+    )
+
+    ## train for conv data
+    # train_data = generate_and_tokenize_prompt(train_val["train"].shuffle())
+    # print("train_data len", len(train_data))
+    # val_data = generate_and_tokenize_prompt(train_val["test"].shuffle())
+    # print("val_data", len(val_data))
+    # print("train_data", train_data[0])
 
     train_data = Dataset.from_list(train_data)
     val_data = Dataset.from_list(val_data)    
