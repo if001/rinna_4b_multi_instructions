@@ -188,6 +188,8 @@ def train(
 
     train_data = Dataset.from_list(train_data)
     val_data = Dataset.from_list(val_data)    
+    print("train_data len", len(train_data))
+    print("val_data", len(val_data))
     ## --- data set ---
 
     gradient_accumulation_steps = batch_size // micro_batch_size
