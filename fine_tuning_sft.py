@@ -164,12 +164,18 @@ def train(
         #     ]  # could be sped up, probably
         return tokenized_full_prompt
 
-    def format_func(data_point):
-        return prompter.generate_prompt(
-            data_point["instruction"],
-            data_point["input"],
-            data_point["output"],
-        )     
+    def format_func(example):
+        output_text = []
+        print('e', example)
+        for v in example:
+            o = prompter.generate_prompt(
+                v["instruction"],
+                v["input"],
+                v["output"],
+            )
+            output_text.append(o)
+        return output_text
+    
     data = load_dataset("json", data_files=data_path)
     train_val = data["train"].train_test_split(
             test_size=val_set_size, shuffle=True, seed=42
