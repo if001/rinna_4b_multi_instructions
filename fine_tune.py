@@ -137,10 +137,10 @@ def train(
             data_point["input"],
             data_point["output"],
         )
-        print(full_prompt)
+        print('full: ', full_prompt)
         tokenized_full_prompt = tokenize(full_prompt)
-        print(tokenized_full_prompt)
-        print('-'*30)
+        print('tokenized: ', tokenized_full_prompt)
+        print('-'*60)
         # if not train_on_inputs:
         #     user_prompt = prompter.generate_prompt(
         #         data_point["instruction"], data_point["input"]
