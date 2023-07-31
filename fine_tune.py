@@ -136,11 +136,11 @@ def train(
             data_point["instruction"],
             data_point["input"],
             data_point["output"],
-        )
-        print('full: ', full_prompt)
+        )        
         tokenized_full_prompt = tokenize(full_prompt)
-        print('tokenized: ', tokenized_full_prompt)
-        print('-'*60)
+        # print('full: ', full_prompt)
+        # print('tokenized: ', tokenized_full_prompt)
+        # print('-'*60)
         # if not train_on_inputs:
         #     user_prompt = prompter.generate_prompt(
         #         data_point["instruction"], data_point["input"]
@@ -177,9 +177,9 @@ def train(
     )
 
     ## train for conv data
-    # train_data = generate_and_tokenize_prompt(train_val["train"].shuffle())
+    # train_data = generate_and_tokenize_prompt_conv(train_val["train"].shuffle())
     # print("train_data len", len(train_data))
-    # val_data = generate_and_tokenize_prompt(train_val["test"].shuffle())
+    # val_data = generate_and_tokenize_prompt_conv(train_val["test"].shuffle())
     # print("val_data", len(val_data))
     # print("train_data", train_data[0])
 
