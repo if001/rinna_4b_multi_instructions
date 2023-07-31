@@ -201,8 +201,8 @@ def train(
     ## --- data set ---
 
     response_template = "### 応答:"
-    instruction_template = "### 指示:"
-    collator = DataCollatorForCompletionOnlyLM(response_template=response_template, instruction_template=instruction_template, tokenizer=tokenizer)
+    instruction_template = "### 指示:"    
+    collator = DataCollatorForCompletionOnlyLM(instruction_template=instruction_template, response_template=response_template, tokenizer=tokenizer)
 
     # gradient_accumulation_steps = batch_size // micro_batch_size    
     trainer = SFTTrainer(
