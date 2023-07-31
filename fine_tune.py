@@ -29,7 +29,8 @@ def train(
         lora_alpha: int = 16,
         lora_dropout: float = 0.05,
         lora_target_modules: List[str] = ["query_key_value"],
-        prompt_template_name: str = "alpaca_ja",  # The prompt template to use, will default to alpaca.
+        prompt_template_name: str = "alpaca_ja",  # The prompt template to use, will default to alpaca.,
+        verbose: bool = False
 ):
     print(
         f"Training Alpaca-LoRA model with params:\n"
@@ -46,6 +47,7 @@ def train(
         f"lora_alpha: {lora_alpha}\n"
         f"lora_dropout: {lora_dropout}\n"
         f"lora_target_modules: {lora_target_modules}\n"
+        f"verbose: {verbose}\n"
     )
     device_map = 'auto'
 
@@ -87,7 +89,7 @@ def train(
 
 
     ## --- data set ---
-    prompter = Prompter(prompt_template_name, verbose=True)
+    prompter = Prompter(prompt_template_name, verbose=verbose)
     def tokenize(prompt, add_eos_token=True):
         # there's probably a way to do this with the tokenizer settings
         # but again, gotta move fast
@@ -138,9 +140,10 @@ def train(
             data_point["output"],
         )        
         tokenized_full_prompt = tokenize(full_prompt)
-        # print('full: ', full_prompt)
-        # print('tokenized: ', tokenized_full_prompt)
-        # print('-'*60)
+        if verbose:
+            print('full: ', full_prompt)
+            print('tokenized: ', tokenized_full_prompt)
+            print('-'*60)
         # if not train_on_inputs:
         #     user_prompt = prompter.generate_prompt(
         #         data_point["instruction"], data_point["input"]
