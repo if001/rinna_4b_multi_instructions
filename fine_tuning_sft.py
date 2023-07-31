@@ -217,7 +217,8 @@ def train(
         ),
         data_collator=transformers.DataCollatorForSeq2Seq(
             tokenizer, pad_to_multiple_of=8, return_tensors="pt", padding=True
-        )
+        ),
+        packing=True
     )
     trainer.train()
 
