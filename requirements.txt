@@ -1,0 +1,7 @@
+git+https://github.com/huggingface/peft.git
+transformers
+datasets
+accelerate
+bitsandbytes
+sentencepiece
+fire

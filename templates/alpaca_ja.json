@@ -1,0 +1,6 @@
+{
+    "description": "Template used by Alpaca-LoRA ja.",
+    "prompt_input": "以下は、タスクを記述する命令と、さらなるコンテキストを提供する入力の組み合わせです。依頼を適切に完了する応答を書きなさい。\n\n### 命令:\n{instruction}\n\n### 入力:\n{input}\n\n### 応答:\n",
+    "prompt_no_input": "以下は、あるタスクを記述した命令です。この命令を適切に完了させる応答を書きなさい。\n\n### 命令:\n{instruction}\n\n### 応答:\n",
+    "response_split": "### 応答:"
+}
