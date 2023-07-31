@@ -166,7 +166,7 @@ def train(
 
     def format_func(example):
         output_text = []
-        print('e', example)
+        # print('e', example)
         for i in range(len(example['output'])):
             text = prompter.generate_prompt(
                 example["instruction"][i],
@@ -176,15 +176,16 @@ def train(
             output_text.append(text)
         return output_text
     
-    data = load_dataset("json", data_files=data_path)
+    
+    if data_path.endswith(".json") or data_path.endswith(".jsonl"):
+        data = load_dataset("json", data_files=data_path)
+    else:
+        data = load_dataset(data_path)
+
     train_val = data["train"].train_test_split(
             test_size=val_set_size, shuffle=True, seed=42
     )
-
-    train_val = data["train"].train_test_split(
-        test_size=val_set_size, shuffle=True, seed=42
-    )
-    train_data = train_val["train"].shuffle()    
+    train_data = train_val["train"].shuffle()
     val_data = train_val["test"].shuffle()    
     print("train_data len", len(train_data))
     print("val_data", len(val_data))

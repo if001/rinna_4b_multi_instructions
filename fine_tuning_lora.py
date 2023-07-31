@@ -163,8 +163,11 @@ def train(
         #     ]  # could be sped up, probably
         return tokenized_full_prompt
 
+    if data_path.endswith(".json") or data_path.endswith(".jsonl"):
+        data = load_dataset("json", data_files=data_path)
+    else:
+        data = load_dataset(data_path)
 
-    data = load_dataset("json", data_files=data_path)
     train_val = data["train"].train_test_split(
             test_size=val_set_size, shuffle=True, seed=42
     )
