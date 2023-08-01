@@ -26,11 +26,7 @@ def train(
         learning_rate: float = 3e-4,
         cutoff_len: int = 256,
         val_set_size: int = 2000,
-        # lora hyperparams
-        lora_r: int = 8,
-        lora_alpha: int = 16,
-        lora_dropout: float = 0.05,
-        lora_target_modules: List[str] = ["query_key_value"],
+        # lora hyperparams        
         prompt_template_name: str = "alpaca_ja",  # The prompt template to use, will default to alpaca.,
         verbose: bool = False
 ):
@@ -45,10 +41,6 @@ def train(
         f"learning_rate: {learning_rate}\n"
         f"cutoff_len: {cutoff_len}\n"
         f"val_set_size: {val_set_size}\n"
-        f"lora_r: {lora_r}\n"
-        f"lora_alpha: {lora_alpha}\n"
-        f"lora_dropout: {lora_dropout}\n"
-        f"lora_target_modules: {lora_target_modules}\n"
         f"verbose: {verbose}\n"
     )
     device_map = 'auto'
@@ -211,7 +203,6 @@ def train(
         eval_dataset=val_data,
         formatting_func=format_func,
         data_collator=collator,        
-        optimizers =('adamw_torch', 'linear'),
         args=transformers.TrainingArguments(
             per_device_train_batch_size=micro_batch_size,
             gradient_accumulation_steps=gradient_accumulation_steps,
@@ -219,6 +210,7 @@ def train(
             num_train_epochs=num_epochs,
             learning_rate=learning_rate,
             output_dir=output_dir,
+            optim="adamw_torch",
         )
     )
     trainer.train()
