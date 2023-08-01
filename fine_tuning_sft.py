@@ -64,9 +64,11 @@ class DataCollatorForCompletionOnlyLMDebug(DataCollatorForLanguageModeling):
                     response_token_ids_start_idx = idx
             print('+'*60)
             if response_token_ids_start_idx is None:
-                raise RuntimeError(
-                    f'Could not find response key {response_token_ids} in token IDs {batch["labels"][i]}'
-                )
+                # raise RuntimeError(
+                #     f'Could not find response key {response_token_ids} in token IDs {batch["labels"][i]}'
+                # )
+                print(f'Could not find response key {response_token_ids} in token IDs {batch["labels"][i]}')
+                continue
 
             response_token_ids_end_idx = response_token_ids_start_idx + len(response_token_ids)
 
