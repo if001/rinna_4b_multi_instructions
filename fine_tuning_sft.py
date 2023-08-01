@@ -195,7 +195,7 @@ def train(
     val_data = Dataset.from_list(val_data)
     ## --- data set ---
 
-    response_template = "### 応答:"    
+    response_template = "### 応答:\n"
     collator = DataCollatorForCompletionOnlyLM(response_template, tokenizer=tokenizer)
 
     gradient_accumulation_steps = batch_size // micro_batch_size    
