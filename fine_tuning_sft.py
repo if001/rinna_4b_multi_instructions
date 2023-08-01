@@ -16,6 +16,65 @@ VAL_SET_SIZE = 2000
 
 
 
+from transformers import DataCollatorForLanguageModeling
+from typing import Any, Dict, List, Optional, Union
+class DataCollatorForCompletionOnlyLMDebug(DataCollatorForLanguageModeling):
+    """
+    Data collator used for completion tasks. It ensures that all the tokens of the labels are set to an 'ignore_index'
+     up to the prompt response template tokens ('response_template'). This ensure that the loss is only
+     calculated on the completion of the reponse.
+
+    Args:
+        response_template (`str`): the template form that indicates the start of the response, typically something like
+            '### Response:\n'
+        mlm (`bool`, *optional*, defaults to `False`): Whether or not to use masked language modeling in the underlying
+            `DataCollatorForLanguageModeling` class. Note that this option currently has no effect but is present
+             for flexibility and backwards-compatibility.
+        ignore_index (`int`, *optional*, defaults to `-100`):
+            The index to use to ignore the initial tokens with
+    """
+
+    def __init__(self, response_template: str, *args, mlm: bool = False, ignore_index: int = -100, **kwargs):
+        super().__init__(*args, mlm=mlm, **kwargs)
+        self.response_template = response_template
+        self.ignore_index = ignore_index
+
+    def torch_call(self, examples: List[Union[List[int], Any, Dict[str, Any]]]) -> Dict[str, Any]:
+        batch = super().torch_call(examples)
+
+        # The prompt ends with the response key plus a newline.  We encode this and then try to find it in the
+        # sequence of tokens.  This should just be a single token.
+        response_token_ids = self.tokenizer.encode(self.response_template, add_special_tokens=False)
+
+        labels = batch["labels"].clone()
+
+        for i in range(len(examples)):
+            response_token_ids_start_idx = None
+
+            for idx in np.where(batch["labels"][i] == response_token_ids[0])[0]:
+                print('idx', idx)
+                # `response_token_ids` is `'### Response:\n'`, here we are just making sure that the token IDs match
+
+                print('response_token_ids', response_token_ids)
+                print('example', examples[i]["input_ids"][idx : idx + len(response_token_ids)])
+                print('cond: ', response_token_ids == examples[i]["input_ids"][idx : idx + len(response_token_ids)])
+                if response_token_ids == examples[i]["input_ids"][idx : idx + len(response_token_ids)]:                    
+                    response_token_ids_start_idx = idx
+            print('+'*60)
+            if response_token_ids_start_idx is None:
+                raise RuntimeError(
+                    f'Could not find response key {response_token_ids} in token IDs {batch["labels"][i]}'
+                )
+
+            response_token_ids_end_idx = response_token_ids_start_idx + len(response_token_ids)
+
+            # Make pytorch loss function ignore all tokens up through the end of the response key
+            labels[i, :response_token_ids_end_idx] = self.ignore_index
+
+        batch["labels"] = labels
+
+        return batch
+
 def train(
         base_model: str = "",
         data_path: str = "",
@@ -88,9 +147,8 @@ def train(
         # but again, gotta move fast
         result = tokenizer(
             prompt,
-            truncation=True,
-            max_length=cutoff_len,
-            padding=True,
+            truncation=False,            
+            padding=False,
             return_tensors=None,
         )
         if (
@@ -196,7 +254,8 @@ def train(
     ## --- data set ---
 
     response_template = "### 応答:\n"
-    collator = DataCollatorForCompletionOnlyLM(response_template, tokenizer=tokenizer)
+    # collator = DataCollatorForCompletionOnlyLM(response_template, tokenizer=tokenizer)
+    collator = DataCollatorForCompletionOnlyLMDebug(response_template, tokenizer=tokenizer)
 
     gradient_accumulation_steps = batch_size // micro_batch_size    
     trainer = SFTTrainer(
