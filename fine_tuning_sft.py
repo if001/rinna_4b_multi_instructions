@@ -227,8 +227,8 @@ def train(
                 example["input"][i],
                 example["output"][i],
             )
-            print('full text: ', text)
-            print('-'*60)
+            # print('full text: ', text)
+            # print('-'*60)
             output_text.append(text)
         return output_text
     
@@ -291,9 +291,8 @@ def train(
     # if torch.__version__ >= "2" and sys.platform != "win32":
     #     model = torch.compile(model)
     # trainer.train()
-
-    model.save_pretrained(output_dir)
-
+    trainer.save_model(output_dir)
+    # model.save_pretrained(output_dir)    
     print(
         "\n If there's a warning about missing keys above, please disregard :)"
     )

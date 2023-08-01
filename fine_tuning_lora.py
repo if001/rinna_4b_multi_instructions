@@ -233,9 +233,8 @@ def train(
     if torch.__version__ >= "2" and sys.platform != "win32":
         model = torch.compile(model)
 
-    trainer.train()
-    trainer.save_model(output_dir)
-    # model.save_pretrained(output_dir)
+    trainer.train()    
+    model.save_pretrained(output_dir)
 
     print(
         "\n If there's a warning about missing keys above, please disregard :)"
