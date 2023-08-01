@@ -222,13 +222,14 @@ def train(
         return tokenized_full_prompt
 
     def format_func(example):
-        print('e', example)
+        # print('e', example)
         text = prompter.generate_prompt(
             example["instruction"],
             example["input"],
             example["output"],
         )
         return text
+        ## for packing=False
         # output_text = []
         # for i in range(len(example['output'])):
         #     text = prompter.generate_prompt(
