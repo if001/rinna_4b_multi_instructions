@@ -222,18 +222,24 @@ def train(
         return tokenized_full_prompt
 
     def format_func(example):
-        output_text = []
         print('e', example)
-        for i in range(len(example['output'])):
-            text = prompter.generate_prompt(
-                example["instruction"][i],
-                example["input"][i],
-                example["output"][i],
-            )
-            # print('full text: ', text)
-            # print('-'*60)
-            output_text.append(text)
-        return output_text
+        text = prompter.generate_prompt(
+            example["instruction"][i],
+            example["input"][i],
+            example["output"][i],
+        )
+        return text
+        # output_text = []
+        # for i in range(len(example['output'])):
+        #     text = prompter.generate_prompt(
+        #         example["instruction"][i],
+        #         example["input"][i],
+        #         example["output"][i],
+        #     )
+        #     # print('full text: ', text)
+        #     # print('-'*60)
+        #     output_text.append(text)
+        # return output_text
     
     
     if data_path.endswith(".json") or data_path.endswith(".jsonl"):
