@@ -51,18 +51,18 @@ class DataCollatorForCompletionOnlyLMDebug(DataCollatorForLanguageModeling):
 
         for i in range(len(examples)):
             response_token_ids_start_idx = None
-            print('decode: ', self.tokenizer.decode(examples[i]["input_ids"]))
-            print('-'*40)
+            # print('decode: ', self.tokenizer.decode(examples[i]["input_ids"]))
+            # print('-'*40)
             for idx in np.where(batch["labels"][i] == response_token_ids[0])[0]:
-                print('idx', idx)
+                # print('idx', idx)
                 # `response_token_ids` is `'### Response:\n'`, here we are just making sure that the token IDs match
 
-                print('response_token_ids', response_token_ids)
-                print('example', examples[i]["input_ids"][idx : idx + len(response_token_ids)])
-                print('cond: ', response_token_ids == examples[i]["input_ids"][idx : idx + len(response_token_ids)])
+                # print('response_token_ids', response_token_ids)
+                # print('example', examples[i]["input_ids"][idx : idx + len(response_token_ids)])
+                # print('cond: ', response_token_ids == examples[i]["input_ids"][idx : idx + len(response_token_ids)])
                 if response_token_ids == examples[i]["input_ids"][idx : idx + len(response_token_ids)]:                    
                     response_token_ids_start_idx = idx
-            print('+'*60)
+            # print('+'*60)
             if response_token_ids_start_idx is None:
                 # raise RuntimeError(
                 #     f'Could not find response key {response_token_ids} in token IDs {batch["labels"][i]}'
