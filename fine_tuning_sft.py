@@ -120,7 +120,7 @@ def train(
         load_in_8bit=True,
         torch_dtype=torch.float16,
         device_map=device_map,
-        quantization_config=quantization_config,
+        # quantization_config=quantization_config,
         #offload_folder="offload",
         #offload_state_dict = True,
     )
@@ -275,7 +275,9 @@ def train(
             num_train_epochs=num_epochs,
             learning_rate=learning_rate,
             output_dir=output_dir,
-            optim="adamw_torch"
+            optim="adamw_torch",
+            eval_steps=200,
+            save_steps=200,
         )
     )
     trainer.train()
