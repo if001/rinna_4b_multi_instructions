@@ -51,7 +51,7 @@ class DataCollatorForCompletionOnlyLMDebug(DataCollatorForLanguageModeling):
 
         for i in range(len(examples)):
             response_token_ids_start_idx = None
-
+            print('decode: ', self.tokenizer.decode(examples[i]))
             for idx in np.where(batch["labels"][i] == response_token_ids[0])[0]:
                 print('idx', idx)
                 # `response_token_ids` is `'### Response:\n'`, here we are just making sure that the token IDs match
