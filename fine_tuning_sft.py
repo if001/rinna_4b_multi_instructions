@@ -166,6 +166,7 @@ def train(
                 example["output"][i],
             )
             print('full text: ', text)
+            print('-'*60)
             output_text.append(text)
         return output_text
     
