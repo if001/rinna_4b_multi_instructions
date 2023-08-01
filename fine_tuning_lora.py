@@ -234,8 +234,8 @@ def train(
         model = torch.compile(model)
 
     trainer.train()
-
-    model.save_pretrained(output_dir)
+    trainer.save_model(output_dir)
+    # model.save_pretrained(output_dir)
 
     print(
         "\n If there's a warning about missing keys above, please disregard :)"
