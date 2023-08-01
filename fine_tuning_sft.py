@@ -165,6 +165,7 @@ def train(
                 example["input"][i],
                 example["output"][i],
             )
+            print('full text: ', text)
             output_text.append(text)
         return output_text
     
@@ -202,7 +203,7 @@ def train(
         train_dataset=train_data,
         eval_dataset=val_data,
         formatting_func=format_func,
-        data_collator=collator,        
+        data_collator=collator,
         args=transformers.TrainingArguments(
             per_device_train_batch_size=micro_batch_size,
             gradient_accumulation_steps=gradient_accumulation_steps,
@@ -210,7 +211,7 @@ def train(
             num_train_epochs=num_epochs,
             learning_rate=learning_rate,
             output_dir=output_dir,
-            optim="adamw_torch",
+            optim="adamw_torch"
         )
     )
     trainer.train()
