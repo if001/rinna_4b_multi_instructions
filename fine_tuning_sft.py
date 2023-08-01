@@ -223,7 +223,7 @@ def train(
 
     def format_func(example):
         output_text = []
-        # print('e', example)
+        print('e', example)
         for i in range(len(example['output'])):
             text = prompter.generate_prompt(
                 example["instruction"][i],
