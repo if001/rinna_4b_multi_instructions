@@ -292,7 +292,8 @@ def train(
         formatting_func=format_func,
         data_collator=collator,
         packing=True,
-        args=args
+        args=args,
+        max_seq_length=cutoff_len
     )
     trainer.train()
 
