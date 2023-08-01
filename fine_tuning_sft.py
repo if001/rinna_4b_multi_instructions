@@ -18,6 +18,7 @@ VAL_SET_SIZE = 2000
 
 from transformers import DataCollatorForLanguageModeling
 from typing import Any, Dict, List, Optional, Union
+import numpy as np
 class DataCollatorForCompletionOnlyLMDebug(DataCollatorForLanguageModeling):
     """
     Data collator used for completion tasks. It ensures that all the tokens of the labels are set to an 'ignore_index'
