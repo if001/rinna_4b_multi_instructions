@@ -212,6 +212,8 @@ def train(
         eval_dataset=val_data,
         formatting_func=format_func,
         data_collator=collator,
+        dataset_batch_size=2,
+        optimizers =('adamw_torch', 'linear')
     )
     trainer.train()
 
