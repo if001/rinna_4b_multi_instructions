@@ -51,7 +51,7 @@ class DataCollatorForCompletionOnlyLMDebug(DataCollatorForLanguageModeling):
 
         for i in range(len(examples)):
             response_token_ids_start_idx = None
-            print('decode: ', self.tokenizer.decode(examples[i]['labels']))
+            print('decode: ', self.tokenizer.decode(examples[i]["input_ids"]))
             print('-'*40)
             for idx in np.where(batch["labels"][i] == response_token_ids[0])[0]:
                 print('idx', idx)
