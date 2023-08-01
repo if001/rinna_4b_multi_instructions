@@ -210,8 +210,7 @@ def train(
         train_dataset=train_data,
         eval_dataset=val_data,
         formatting_func=format_func,
-        data_collator=collator,
-        dataset_batch_size=2,
+        data_collator=collator,        
         optimizers =('adamw_torch', 'linear'),
         args=transformers.TrainingArguments(
             per_device_train_batch_size=micro_batch_size,
