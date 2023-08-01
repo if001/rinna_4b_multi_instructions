@@ -224,9 +224,9 @@ def train(
     def format_func(example):
         print('e', example)
         text = prompter.generate_prompt(
-            example["instruction"][i],
-            example["input"][i],
-            example["output"][i],
+            example["instruction"],
+            example["input"],
+            example["output"],
         )
         return text
         # output_text = []
