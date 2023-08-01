@@ -260,12 +260,13 @@ def train(
     val_data = Dataset.from_list(val_data)
     ## --- data set ---
 
-    # response_template = "### 応答:"
+    response_template = "### 応答:"
     # collator = DataCollatorForCompletionOnlyLM(response_template, tokenizer=tokenizer)
-    # collator = DataCollatorForCompletionOnlyLMDebug(response_template, tokenizer=tokenizer)
-    collator=transformers.DataCollatorForSeq2Seq(
-            tokenizer, pad_to_multiple_of=8, return_tensors="pt", padding=True
-    )
+    collator = DataCollatorForCompletionOnlyLMDebug(response_template, tokenizer=tokenizer)
+    # collator=transformers.DataCollatorForSeq2Seq(
+    #         tokenizer, pad_to_multiple_of=8, return_tensors="pt", padding=True
+    # )
+    gradient_accumulation_steps = batch_size // micro_batch_size    
     args=transformers.TrainingArguments(
             per_device_train_batch_size=micro_batch_size,
             gradient_accumulation_steps=gradient_accumulation_steps,
@@ -276,8 +277,7 @@ def train(
             optim="adamw_torch",
             eval_steps=200,
             save_steps=200,
-    )
-    gradient_accumulation_steps = batch_size // micro_batch_size    
+    )    
     trainer = SFTTrainer(
         model,
         train_dataset=train_data,
