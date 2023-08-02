@@ -290,7 +290,8 @@ def train(
         train_dataset=train_data,
         eval_dataset=val_data,
         formatting_func=format_func,
-        data_collator=collator,
+        dataset_text_field="train",
+        # data_collator=collator,
         packing=True,
         args=args,
         max_seq_length=cutoff_len
