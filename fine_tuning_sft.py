@@ -7,7 +7,7 @@ import transformers
 from datasets import load_dataset, Dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import BitsAndBytesConfig
-# from peft import LoraConfig, get_peft_model, prepare_model_for_int8_training, TaskType
+from peft import LoraConfig, get_peft_model, prepare_model_for_int8_training, TaskType
 from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
 
 from utils.prompter import Prompter
@@ -94,7 +94,12 @@ def train(
         val_set_size: int = 2000,
         # lora hyperparams        
         prompt_template_name: str = "alpaca_ja",  # The prompt template to use, will default to alpaca.,
-        verbose: bool = False
+        verbose: bool = False,
+        with_lora: bool = False,
+        lora_r: int = 8,
+        lora_alpha: int = 16,
+        lora_dropout: float = 0.05,
+        lora_target_modules: List[str] = ["query_key_value"],
 ):
     print(
         f"Training Alpaca-LoRA model with params:\n"
@@ -109,6 +114,14 @@ def train(
         f"val_set_size: {val_set_size}\n"
         f"verbose: {verbose}\n"
     )
+    if with_lora:
+        print(
+            f"use lora!!\n"
+            f"lora_r: {lora_r}\n"
+            f"lora_alpha: {lora_alpha}\n"
+            f"lora_dropout: {lora_dropout}\n"
+            f"lora_target_modules: {lora_target_modules}\n"            
+        )
     device_map = 'auto'
 
     quantization_config = BitsAndBytesConfig(
@@ -135,16 +148,17 @@ def train(
     print('eos:', tokenizer.eos_token)
     tokenizer.padding_side = "right"  # Allow batched inference
 
-    # config = LoraConfig(
-    #     r=lora_r,
-    #     lora_alpha=lora_alpha,
-    #     target_modules=lora_target_modules,
-    #     lora_dropout=lora_dropout,
-    #     bias="none",
-    #     task_type="CAUSAL_LM",
-    # )
-    # model = get_peft_model(model, config)
-    # model.print_trainable_parameters()
+    if with_lora:
+        config = LoraConfig(
+            r=lora_r,
+            lora_alpha=lora_alpha,
+            target_modules=lora_target_modules,
+            lora_dropout=lora_dropout,
+            bias="none",
+            task_type="CAUSAL_LM",
+        )
+        model = get_peft_model(model, config)
+        model.print_trainable_parameters()
 
 
     ## --- data set ---
