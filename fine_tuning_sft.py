@@ -267,9 +267,9 @@ def train(
     val_data = Dataset.from_list(val_data)
     ## --- data set ---
 
-    response_template = "### 応答:"
+    # response_template = "### 応答:"
     # collator = DataCollatorForCompletionOnlyLM(response_template, tokenizer=tokenizer)
-    collator = DataCollatorForCompletionOnlyLMDebug(response_template, tokenizer=tokenizer)
+    # collator = DataCollatorForCompletionOnlyLMDebug(response_template, tokenizer=tokenizer)
     # collator=transformers.DataCollatorForSeq2Seq(
     #         tokenizer, pad_to_multiple_of=8, return_tensors="pt", padding=True
     # )
@@ -282,8 +282,8 @@ def train(
             learning_rate=learning_rate,
             output_dir=output_dir,
             optim="adamw_torch",
-            eval_steps=200,
-            save_steps=200,
+            eval_steps=100,
+            save_steps=100,
     )    
     trainer = SFTTrainer(
         model,
