@@ -313,9 +313,9 @@ def train(
         max_seq_length=cutoff_len,
         peft_config=peft_config
     )
-    trainer.train()
 
     model.config.use_cache = False
+    trainer.train()    
 
     #old_state_dict = model.state_dict
     # model.state_dict = (
