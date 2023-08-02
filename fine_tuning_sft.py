@@ -148,8 +148,9 @@ def train(
     print('eos:', tokenizer.eos_token)
     tokenizer.padding_side = "right"  # Allow batched inference
 
+    peft_config = None
     if with_lora:
-        config = LoraConfig(
+        peft_config = LoraConfig(
             r=lora_r,
             lora_alpha=lora_alpha,
             target_modules=lora_target_modules,
@@ -157,8 +158,8 @@ def train(
             bias="none",
             task_type="CAUSAL_LM",
         )
-        model = get_peft_model(model, config)
-        model.print_trainable_parameters()
+        # model = get_peft_model(model, config)
+        # model.print_trainable_parameters()
 
 
     ## --- data set ---
@@ -236,7 +237,8 @@ def train(
         return tokenized_full_prompt
 
     def format_func(example):
-        print('e', example)
+        if verbose:
+            print('e', example)
         text = prompter.generate_prompt(
             example["instruction"],
             example["input"],
@@ -308,7 +310,8 @@ def train(
         # data_collator=collator,
         packing=True,
         args=args,
-        max_seq_length=cutoff_len
+        max_seq_length=cutoff_len,
+        peft_config=peft_config
     )
     trainer.train()
 
