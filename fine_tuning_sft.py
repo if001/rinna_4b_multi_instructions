@@ -300,6 +300,7 @@ def train(
             optim="adamw_torch",
             eval_steps=50,
             save_steps=50,
+            evaluation_strategy="steps",
     )    
     trainer = SFTTrainer(
         model,
