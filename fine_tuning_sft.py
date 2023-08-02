@@ -222,7 +222,7 @@ def train(
         return tokenized_full_prompt
 
     def format_func(example):
-        # print('e', example)
+        print('e', example)
         text = prompter.generate_prompt(
             example["instruction"],
             example["input"],
@@ -277,13 +277,13 @@ def train(
     args=transformers.TrainingArguments(
             per_device_train_batch_size=micro_batch_size,
             gradient_accumulation_steps=gradient_accumulation_steps,
-            warmup_steps=100,
+            warmup_steps=50,
             num_train_epochs=num_epochs,
             learning_rate=learning_rate,
             output_dir=output_dir,
             optim="adamw_torch",
-            eval_steps=100,
-            save_steps=100,
+            eval_steps=50,
+            save_steps=50,
     )    
     trainer = SFTTrainer(
         model,
