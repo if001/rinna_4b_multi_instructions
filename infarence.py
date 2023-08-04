@@ -141,6 +141,7 @@ def main(
                 4
             )
             obj[key] = results
+            print('results', results)
     with open(output, 'w') as f:
         json.dump(obj, f, indent=2)
 
