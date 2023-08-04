@@ -77,7 +77,8 @@ def evaluate(
             generation_config=generation_config,
             return_dict_in_generate=True,
             output_scores=True,
-            max_new_tokens=64,
+            max_new_tokens=256,
+            min_new_tokens=2,
           )
     s = generation_output.sequences[0]
     output = tokenizer.decode(s, skip_special_tokens=True)
@@ -128,21 +129,21 @@ def main(
 ):    
     with open(conv_file) as f:
         json_file = json.load(f)
-    inner_loop_count = 4
+    inner_loop_count = 10
     obj = {}
     tokenizer, model = load_model(base_model, lora_weight)
     for key in json_file.keys():
         category_text = json_file[key]
-        for text in category_text:
-            for i in range(inner_loop_count):
+        for i, text in enumerate(category_text):
+            for j in range(inner_loop_count):
                 results = gen_loop(
                     tokenizer,
                     model,
                     text,
                     6
                 )
-                obj[f"{key}_{i}"] = results
-                print(f'results {key} {i}')
+                obj[f"{key}_{i}_{j}"] = results
+                print(f'results {key} {i} {j}')
                 for v in results:
                     print(v)
                 print('-'*60)
