@@ -121,10 +121,10 @@ def gen_loop(
 
 
 def main(
-        base_model,
-        lora_weight,
+        base_model,        
         conv_file,
         output,
+        lora_weight=None,
 ):    
     with open(conv_file) as f:
         json_file = json.load(f)
