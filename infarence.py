@@ -80,7 +80,7 @@ def evaluate(
             max_new_tokens=64,
           )
     s = generation_output.sequences[0]
-    output = tokenizer.decode(s)
+    output = tokenizer.decode(s, skip_special_tokens=True)
     return output
 
 
@@ -139,7 +139,7 @@ def main(
                     tokenizer,
                     model,
                     text,
-                    4
+                    6
                 )
                 obj[f"{key}_{i}"] = results
                 print(f'results {key} {i}')
