@@ -128,20 +128,24 @@ def main(
 ):    
     with open(conv_file) as f:
         json_file = json.load(f)
-    
+    inner_loop_count = 4
     obj = {}
     tokenizer, model = load_model(base_model, lora_weight)
     for key in json_file.keys():
         category_text = json_file[key]
         for text in category_text:
-            results = gen_loop(
-                tokenizer,
-                model,
-                text,
-                4
-            )
-            obj[key] = results
-            print('results', results)
+            for i in range(inner_loop_count):
+                results = gen_loop(
+                    tokenizer,
+                    model,
+                    text,
+                    4
+                )
+                obj[f"{key}_{i}"] = results
+                print(f'results {key} {i}')
+                for v in results:
+                    print(v)
+                print('-'*60)
     with open(output, 'w') as f:
         json.dump(obj, f, indent=2)
 
