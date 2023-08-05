@@ -33,7 +33,11 @@ def load_model(base_model_name, lora_weight=None):
     return tokenizer, model
 
 def generate_prompt_ja(convs):
-    prompt = ''
+    if len(convs) % 2 == 0:
+      prompt = 'あなたはユーザーとして振る舞ってください。システムの応答に関する具体的な質問や関連する質問をします。\n\n'
+    else:
+      prompt = 'あなたはユーザーに親切でフレンドリーなAIです。ユーザーの質問に対し詳細に長い文章で質問に答えます。\n\n'
+    
     for i, v in enumerate(convs):
       prefix = 'ユーザー'
       if i % 2 == 1:
