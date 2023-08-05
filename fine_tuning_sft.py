@@ -100,6 +100,7 @@ def train(
         lora_alpha: int = 16,
         lora_dropout: float = 0.05,
         lora_target_modules: List[str] = ["query_key_value"],
+        load_4bit: bool = False
 ):
     print(
         f"Training Alpaca-LoRA model with params:\n"
@@ -124,19 +125,21 @@ def train(
         )
     device_map = 'auto'
 
-    quantization_config = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_use_double_quant=True,
-        bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.bfloat16
-    )
+    quantization_config = None
+    if load_4bit:
+        quantization_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_use_double_quant=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=torch.bfloat16
+        )
 
     model = AutoModelForCausalLM.from_pretrained(
         base_model,        
         load_in_8bit=True,
         torch_dtype=torch.float16,
         device_map=device_map,
-        # quantization_config=quantization_config,
+        quantization_config=quantization_config,
         #offload_folder="offload",
         #offload_state_dict = True,
     )

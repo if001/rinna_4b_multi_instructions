@@ -54,11 +54,16 @@ def evaluate(
         top_p=0.95,
         top_k=40,
         num_beams=1,
+        min_tokens_len=64,
         **kwargs,
 ):
     device='cuda'
     inputs = tokenizer(prompt, return_tensors="pt", add_special_tokens=False)
     input_ids = inputs["input_ids"].to(device)
+
+    max_new_tokens = 256
+    min_tokens_len = min(input_ids+min_tokens_len, max_new_tokens)
+
     generation_config = GenerationConfig(
         temperature=temperature,
         top_p=top_p,
@@ -78,7 +83,7 @@ def evaluate(
             return_dict_in_generate=True,
             output_scores=True,
             max_new_tokens=256,
-            min_new_tokens=2,
+            min_new_tokens=min_tokens_len,
           )
     s = generation_output.sequences[0]
     output = tokenizer.decode(s, skip_special_tokens=True)
