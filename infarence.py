@@ -112,7 +112,7 @@ def gen_loop(
                     model,
                     prompt
         )
-        system_output = output[len(prompt):]
+        system_output = output[len(prompt):].strip()
         convs.append(system_output)
 
         ## userの返答を生成
@@ -122,7 +122,7 @@ def gen_loop(
                     model,
                     prompt
         )
-        user_output = output[len(prompt):]        
+        user_output = output[len(prompt):].strip()
         convs.append(user_output)
 
         cnt += 1
