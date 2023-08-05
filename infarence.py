@@ -50,11 +50,11 @@ def evaluate(
         tokenizer,
         model,
         prompt,        
-        temperature=0.75,
-        top_p=0.95,
+        temperature=0.85,
+        top_p=0.85,
         top_k=40,
         num_beams=1,
-        min_tokens_len=64,
+        min_tokens_len=16,
         **kwargs,
 ):
     device='cuda'
@@ -131,15 +131,22 @@ def main(
         conv_file,
         output,
         lora_weight=None,
-):    
+):
+    gen_list = [
+        "open_qa",
+        "closed_qa",
+        "brainstorming"
+    ]
     with open(conv_file) as f:
         json_file = json.load(f)
     inner_loop_count = 10
     obj = {}
     tokenizer, model = load_model(base_model, lora_weight)
     for key in json_file.keys():
+        if key not in gen_list:
+            continue
         category_text = json_file[key]
-        for i, text in enumerate(category_text):
+        for i, text in enumerate(category_text):            
             for j in range(inner_loop_count):
                 results = gen_loop(
                     tokenizer,
