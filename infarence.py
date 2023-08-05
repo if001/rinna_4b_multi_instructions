@@ -60,7 +60,7 @@ def evaluate(
     device='cuda'
     inputs = tokenizer(prompt, return_tensors="pt", add_special_tokens=False)
     input_ids = inputs["input_ids"].to(device)
-
+    print(len(input_ids))
     max_new_tokens = 256
     min_tokens_len = min(input_ids+min_tokens_len, max_new_tokens)
 
