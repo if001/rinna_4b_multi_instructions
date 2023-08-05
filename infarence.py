@@ -62,8 +62,8 @@ def evaluate(
     input_ids = inputs["input_ids"].to(device)
     
     max_new_tokens = 256
-    input_len = input_ids.size()[-1]
-    min_tokens_len = min(input_len+min_tokens_len, max_new_tokens)
+    # input_len = input_ids.size()[-1]
+    # min_tokens_len = min(input_len+min_tokens_len, max_new_tokens)
 
     generation_config = GenerationConfig(
         temperature=temperature,
@@ -84,7 +84,7 @@ def evaluate(
             return_dict_in_generate=True,
             output_scores=True,
             max_new_tokens=256,
-            min_new_tokens=min_tokens_len,
+            # min_new_tokens=min_tokens_len,
           )
     s = generation_output.sequences[0]
     output = tokenizer.decode(s, skip_special_tokens=True)
