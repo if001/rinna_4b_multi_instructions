@@ -146,7 +146,8 @@ def train(
     )
     # model = prepare_model_for_int8_training(model)
 
-    tokenizer = AutoTokenizer.from_pretrained(base_model, use_fast=False)
+    # tokenizer = AutoTokenizer.from_pretrained(base_model, use_fast=False)
+    tokenizer = AutoTokenizer.from_pretrained(base_model)
     print('special token: ', tokenizer.special_tokens_map)
     print('pad:', tokenizer.pad_token)
     print('eos:', tokenizer.eos_token)
