@@ -95,6 +95,7 @@ def train(
         # lora hyperparams        
         prompt_template_name: str = "alpaca_ja",  # The prompt template to use, will default to alpaca.,
         add_eos: bool = False,
+        warmup_steps:int = 50,
         verbose: bool = False,
         with_lora: bool = False,
         lora_r: int = 8,
@@ -115,6 +116,7 @@ def train(
         f"cutoff_len: {cutoff_len}\n"
         f"val_set_size: {val_set_size}\n"
         f"verbose: {verbose}\n"
+        f"warmup_steps: {warmup_steps}\n"
     )
     if with_lora:
         print(
@@ -300,7 +302,7 @@ def train(
     args=transformers.TrainingArguments(
             per_device_train_batch_size=micro_batch_size,
             gradient_accumulation_steps=gradient_accumulation_steps,
-            warmup_steps=50,
+            warmup_steps=warmup_steps,
             num_train_epochs=num_epochs,
             learning_rate=learning_rate,
             output_dir=output_dir,
