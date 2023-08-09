@@ -94,6 +94,7 @@ def train(
         val_set_size: int = 2000,
         # lora hyperparams        
         prompt_template_name: str = "alpaca_ja",  # The prompt template to use, will default to alpaca.,
+        add_eos: bool = False,
         verbose: bool = False,
         with_lora: bool = False,
         lora_r: int = 8,
@@ -247,6 +248,8 @@ def train(
             example["input"],
             example["output"],
         )
+        if add_eos:
+            text += '<|endoftext|>'
         return text
         ## for packing=False
         # output_text = []
