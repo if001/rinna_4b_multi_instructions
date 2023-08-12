@@ -323,7 +323,8 @@ def train(
         peft_config=peft_config
     )
     # e = trainer.get_eval_dataloader()
-    trainer.evaluate(val_data)
+    for v in val_data:
+        trainer.evaluate(v)
 
     model.config.use_cache = False
     trainer.train()    
