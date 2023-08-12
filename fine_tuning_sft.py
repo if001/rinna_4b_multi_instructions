@@ -270,15 +270,15 @@ def train(
         #     output_text.append(text)
         # return output_text
     
-    # train_data, val_data = load_dolly_and_agent(data_path,
-    #                                             select_len=500, 
-    #                                             val_set_size=val_set_size,
-    #                                             verbose=verbose
-    #                                             )
-    train_data, val_data = load_merged_dataset(data_path,                                            
+    train_data, val_data = load_dolly_and_agent(data_path,
+                                                select_len=500, 
                                                 val_set_size=val_set_size,
                                                 verbose=verbose
                                                 )
+    # train_data, val_data = load_merged_dataset(data_path,
+    #                                             val_set_size=val_set_size,
+    #                                             verbose=verbose
+    #                                             )
 
     ## train for conv data
     # train_data = generate_and_tokenize_prompt_conv(train_val["train"].shuffle())
@@ -289,10 +289,6 @@ def train(
 
     train_data = Dataset.from_list(train_data)
     val_data = Dataset.from_list(val_data)
-    print(val_data)
-    for v in val_data:
-        print('v', v)
-        print('-')
     ## --- data set ---
 
     # response_template = "### 応答:"
@@ -326,6 +322,9 @@ def train(
         max_seq_length=cutoff_len,
         peft_config=peft_config
     )
+    e = trainer.get_eval_dataloader()
+    print(e)
+    trainer.evaluate(da)
 
     model.config.use_cache = False
     trainer.train()    

@@ -47,14 +47,22 @@ def load_dolly_and_agent(dataset_paths, select_len = 10, val_set_size = 2, verbo
         return train, val
 
 def main():        
+        print("dataset loader main")
         # dataset_path = ['../dataset/databricks-dolly-15k-ja.json', '../dataset/agent_dataset.json']
         dataset_path = ['../dataset/databricks-dolly-15k-ja.json']
-        train, val = load_dolly_and_agent(
+        train, val = load_merged_dataset(
                 dataset_path,
-                select_len=5,
+                val_set_size=5,
                 verbose=True)                                         
-        
-        #for v in val:
-        #        print(v)
+        for v in train:
+                if 'instruction' not in v:
+                        print('not inst!!!', v)
+                if 'output' not in v:
+                        print('not out!!!', v)
+        for v in val:
+                if 'instruction' not in v:
+                        print('not inst!!!', v)
+                if 'output' not in v:
+                        print('not out!!!', v)
 if __name__ == '__main__':
         main()
