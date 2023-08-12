@@ -10,6 +10,8 @@ from transformers import BitsAndBytesConfig
 from peft import LoraConfig, get_peft_model, prepare_model_for_int8_training, TaskType
 from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
 
+from dataset_loader import load_merged_dataset
+
 from utils.prompter import Prompter
 
 VAL_SET_SIZE = 2000
@@ -85,6 +87,7 @@ class DataCollatorForCompletionOnlyLMDebug(DataCollatorForLanguageModeling):
 def train(
         base_model: str = "",
         data_path: str = "",
+        data_path2: str = "",
         output_dir: str = "",
         batch_size: int = 128,
         micro_batch_size: int = 4,
@@ -108,6 +111,7 @@ def train(
         f"Training Alpaca-LoRA model with params:\n"
         f"base_model: {base_model}\n"
         f"data_path: {data_path}\n"
+        f"data_path2: {data_path2}\n"
         f"output_dir: {output_dir}\n"
         f"batch_size: {batch_size}\n"
         f"micro_batch_size: {micro_batch_size}\n"
@@ -267,19 +271,7 @@ def train(
         #     output_text.append(text)
         # return output_text
     
-    
-    if data_path.endswith(".json") or data_path.endswith(".jsonl"):
-        data = load_dataset("json", data_files=data_path)
-    else:
-        data = load_dataset(data_path)
-
-    train_val = data["train"].train_test_split(
-            test_size=val_set_size, shuffle=True, seed=42
-    )
-    train_data = train_val["train"].shuffle()
-    val_data = train_val["test"].shuffle()    
-    print("train_data len", len(train_data))
-    print("val_data", len(val_data))
+    train_data, val_data = load_merged_dataset(data_path, data_path2, val_set_size, 100)
 
     ## train for conv data
     # train_data = generate_and_tokenize_prompt_conv(train_val["train"].shuffle())
