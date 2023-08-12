@@ -16,6 +16,8 @@ from utils.prompter import Prompter
 
 VAL_SET_SIZE = 2000
 
+# from transformers.utils import logging
+# logging.set_verbosity_info()
 
 
 from transformers import DataCollatorForLanguageModeling
@@ -322,9 +324,6 @@ def train(
         max_seq_length=cutoff_len,
         peft_config=peft_config
     )
-    # e = trainer.get_eval_dataloader()
-    for v in val_data:
-        trainer.evaluate(v)
 
     model.config.use_cache = False
     trainer.train()    
