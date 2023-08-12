@@ -47,12 +47,14 @@ def load_dolly_and_agent(dataset_paths, select_len = 10, val_set_size = 2, verbo
         return train, val
 
 def main():        
+        # dataset_path = ['../dataset/databricks-dolly-15k-ja.json', '../dataset/agent_dataset.json']
+        dataset_path = ['../dataset/databricks-dolly-15k-ja.json']
         train, val = load_dolly_and_agent(
-                ['../dataset/databricks-dolly-15k-ja.json', '../dataset/agent_dataset.json'], 
+                dataset_path,
                 select_len=5,
                 verbose=True)                                         
         
-        for v in val:
-                print(v)
+        #for v in val:
+        #        print(v)
 if __name__ == '__main__':
         main()

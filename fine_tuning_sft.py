@@ -270,8 +270,12 @@ def train(
         #     output_text.append(text)
         # return output_text
     
-    train_data, val_data = load_dolly_and_agent(data_path,
-                                                select_len=500, 
+    # train_data, val_data = load_dolly_and_agent(data_path,
+    #                                             select_len=500, 
+    #                                             val_set_size=val_set_size,
+    #                                             verbose=verbose
+    #                                             )
+    train_data, val_data = load_merged_dataset(data_path,                                            
                                                 val_set_size=val_set_size,
                                                 verbose=verbose
                                                 )
