@@ -248,8 +248,13 @@ def train(
         return tokenized_full_prompt
 
     def format_func(example):
-        if verbose:
-            print('e', example)
+        #if verbose:
+        #    print('e', example)
+        if 'instruction' not in example and 'input' not in example:
+            print('not!!!!!!!!!!!!!!', example)
+        if 'output' not in example:
+            print('not output!!!!!!!!!!!!!!', example)
+
         text = prompter.generate_prompt(
             example["instruction"],
             example["input"],
@@ -341,16 +346,3 @@ def train(
 
 if __name__ == "__main__":
     fire.Fire(train)
-
-
-{'input': '', 
-   'instruction': 'スカイネットを作った責任者は誰ですか？',
-     'output': 'スカイネットは、映画『ターミネーター』に登場する架空の自動防衛ネットワークである。主な製作者はジェームズ・キャメロンで、彼はスカイネットが登場するターミネーター第1作の脚本と監督を担当した。',
-     'category': 'open_qa',
-       'index': '11358'
-       }
-
-{'input': '', 
- 'instruction': 'なぜ、クラウド事業者はネットワークやストレージの処理に専用ハードウェアを使うのに、大企業のプライベートクラウドには使わないのか？',
-   'output': '大規模なクラウドプロバイダーは、データ処理ユニット（DPU）と呼ばれる専用ハードウェアを使用して、マルチテナントのサポートとハードウェア対ハイパーバイザーの分離、オフロードによるパフォーマンスの向上、インフラスタック全体の所有と制御、コアの解放による収益の増加、多数のテナントとワークロードをサポートするためのスケーリングを行います。大企業では、高性能、低レイテンシー、スケールを必要とする一部のアプリケーションを除き、同様のニーズはありません。さらに、企業はデータセンターの建設や管理への投資を抑えたいと考えています。',
-     'category': 'general_qa', 'index': '11761'}
