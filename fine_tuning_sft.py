@@ -10,7 +10,7 @@ from transformers import BitsAndBytesConfig
 from peft import LoraConfig, get_peft_model, prepare_model_for_int8_training, TaskType
 from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
 
-from dataset_loader import load_merged_dataset
+from utils.dataset_loader import load_merged_dataset, load_dolly_and_agent
 
 from utils.prompter import Prompter
 
@@ -271,7 +271,7 @@ def train(
         #     output_text.append(text)
         # return output_text
     
-    train_data, val_data = load_merged_dataset(data_path, data_path2, val_set_size, 100)
+    train_data, val_data = load_dolly_and_agent([data_path, data_path2], select_len=100, val_set_size=val_set_size)
 
     ## train for conv data
     # train_data = generate_and_tokenize_prompt_conv(train_val["train"].shuffle())
