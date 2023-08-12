@@ -86,8 +86,7 @@ class DataCollatorForCompletionOnlyLMDebug(DataCollatorForLanguageModeling):
 
 def train(
         base_model: str = "",
-        data_path: str = "",
-        data_path2: str = "",
+        data_path: List[str] = [],
         output_dir: str = "",
         batch_size: int = 128,
         micro_batch_size: int = 4,
@@ -110,8 +109,7 @@ def train(
     print(
         f"Training Alpaca-LoRA model with params:\n"
         f"base_model: {base_model}\n"
-        f"data_path: {data_path}\n"
-        f"data_path2: {data_path2}\n"
+        f"data_path: {data_path}\n"        
         f"output_dir: {output_dir}\n"
         f"batch_size: {batch_size}\n"
         f"micro_batch_size: {micro_batch_size}\n"
@@ -272,7 +270,7 @@ def train(
         #     output_text.append(text)
         # return output_text
     
-    train_data, val_data = load_dolly_and_agent([data_path, data_path2], 
+    train_data, val_data = load_dolly_and_agent(data_path,
                                                 select_len=500, 
                                                 val_set_size=val_set_size,
                                                 verbose=verbose

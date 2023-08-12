@@ -52,7 +52,7 @@ def main():
                 select_len=5,
                 verbose=True)                                         
         
-        for v in train:
+        for v in val:
                 print(v)
 if __name__ == '__main__':
         main()
