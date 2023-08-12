@@ -271,7 +271,11 @@ def train(
         #     output_text.append(text)
         # return output_text
     
-    train_data, val_data = load_dolly_and_agent([data_path, data_path2], select_len=100, val_set_size=val_set_size)
+    train_data, val_data = load_dolly_and_agent([data_path, data_path2], 
+                                                select_len=100, 
+                                                val_set_size=val_set_size,
+                                                verbose=verbose
+                                                )
 
     ## train for conv data
     # train_data = generate_and_tokenize_prompt_conv(train_val["train"].shuffle())
