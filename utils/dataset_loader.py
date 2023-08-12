@@ -36,8 +36,11 @@ def load_merged_dataset(dataset_paths, val_set_size, verbose=False, data_set_for
 def load_dolly_and_agent(dataset_paths, select_len = 10, val_set_size = 2, verbose=False):
         def formatter(dataset_path, dataset):
                 if "databricks-dolly-15k-ja" in dataset_path:
-                        dataset = dataset.remove_columns([col for col in dataset.column_names if col not in ['input', 'instruction', 'output']])
-                        dataset = dataset.shuffle().select(range(select_len))
+                        dataset = dataset.remove_columns([col for col in dataset.column_names if col not in ['input', 'instruction', 'output', 'index']])
+                        dataset = dataset.shuffle().select(range(select_len))                        
+                if "agent_dataset" in dataset_path:
+                        new_column = [ str(i) for i in range(len(dataset))]
+                        dataset = dataset.add_column("index", new_column)
                 return dataset
         
         train, val = load_merged_dataset(dataset_paths, val_set_size= val_set_size, verbose=verbose, data_set_formatter=formatter)
@@ -45,10 +48,11 @@ def load_dolly_and_agent(dataset_paths, select_len = 10, val_set_size = 2, verbo
 
 def main():        
         train, val = load_dolly_and_agent(
-                ['./dataset/databricks-dolly-15k-ja.json', './dataset/agent_dataset.json'], 
+                ['../dataset/databricks-dolly-15k-ja.json', '../dataset/agent_dataset.json'], 
+                select_len=5,
                 verbose=True)                                         
         
-        #for v in train:
-        #        print(v)
+        for v in train:
+                print(v)
 if __name__ == '__main__':
         main()
