@@ -248,8 +248,8 @@ def train(
         return tokenized_full_prompt
 
     def format_func(example):
-        if verbose:
-            print('e', example)
+        #if verbose:
+        #    print('e', example)
         text = prompter.generate_prompt(
             example["instruction"],
             example["input"],
