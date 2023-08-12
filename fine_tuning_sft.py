@@ -322,9 +322,8 @@ def train(
         max_seq_length=cutoff_len,
         peft_config=peft_config
     )
-    e = trainer.get_eval_dataloader()
-    print(e)
-    trainer.evaluate(da)
+    # e = trainer.get_eval_dataloader()
+    trainer.evaluate(val_data)
 
     model.config.use_cache = False
     trainer.train()    
