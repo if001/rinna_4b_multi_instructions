@@ -7,7 +7,7 @@ import transformers
 from datasets import load_dataset, Dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import BitsAndBytesConfig
-from peft import LoraConfig, get_peft_model, prepare_model_for_int8_training, TaskType
+from peft import LoraConfig, get_peft_model, prepare_model_for_int8_training, TaskType, PeftModel
 from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
 
 from utils.dataset_loader import load_merged_dataset, load_dolly_and_agent
@@ -106,7 +106,8 @@ def train(
         lora_alpha: int = 16,
         lora_dropout: float = 0.05,
         lora_target_modules: List[str] = ["query_key_value"],
-        load_4bit: bool = False
+        load_4bit: bool = False,
+        lora_weight: str = "",
 ):
     print(
         f"Training Alpaca-LoRA model with params:\n"
@@ -171,7 +172,13 @@ def train(
         )
         # model = get_peft_model(model, config)
         # model.print_trainable_parameters()
-
+    if lora_weight != "":
+        print('load lora ', lora_weight)
+        model = PeftModel.from_pretrained(
+            model,
+            lora_weight,
+            torch_dtype=torch.float16,
+        )
 
     ## --- data set ---
     prompter = Prompter(prompt_template_name, verbose=False)
@@ -272,15 +279,17 @@ def train(
         #     output_text.append(text)
         # return output_text
     
-    train_data, val_data = load_dolly_and_agent(data_path,
+    if len(data_path) == 1:
+        train_data, val_data = load_merged_dataset(data_path,
+                                                    val_set_size=val_set_size,
+                                                    verbose=verbose
+                                                    )
+    else:
+        train_data, val_data = load_dolly_and_agent(data_path,
                                                 select_len=500, 
                                                 val_set_size=val_set_size,
                                                 verbose=verbose
                                                 )
-    # train_data, val_data = load_merged_dataset(data_path,
-    #                                             val_set_size=val_set_size,
-    #                                             verbose=verbose
-    #                                             )
 
     ## train for conv data
     # train_data = generate_and_tokenize_prompt_conv(train_val["train"].shuffle())
