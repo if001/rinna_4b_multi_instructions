@@ -249,11 +249,7 @@ def train(
 
     def format_func(example):
         #if verbose:
-        #    print('e', example)
-        if 'instruction' not in example and 'input' not in example:
-            print('not!!!!!!!!!!!!!!', example)
-        if 'output' not in example:
-            print('not output!!!!!!!!!!!!!!', example)
+        #    print('e', example)                    
 
         text = prompter.generate_prompt(
             example["instruction"],
@@ -291,6 +287,10 @@ def train(
 
     train_data = Dataset.from_list(train_data)
     val_data = Dataset.from_list(val_data)
+    print(val_data)
+    for v in val_data:
+        print('v', v)
+        print('-')
     ## --- data set ---
 
     # response_template = "### 応答:"
