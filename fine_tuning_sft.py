@@ -277,7 +277,7 @@ def train(
         # return output_text
     
     train_data, val_data = load_dolly_and_agent([data_path, data_path2], 
-                                                select_len=500, 
+                                                select_len=50, 
                                                 val_set_size=val_set_size,
                                                 verbose=verbose
                                                 )
